@@ -4,26 +4,26 @@ using namespace std;
 Hash::Hash() {
 	for (int i = 0; i < TABLESIZE; i++) {
 		hashTable[i] = new item;
-		hashTable[i]->name = "empty";
-		hashTable[i]->drink = "empty";
+		hashTable[i]->planet = "empty";
+		hashTable[i]->system = "empty";
 		hashTable[i]->next = NULL;
 	}
 }
 
-void Hash::addItem(string name, string drink) {
-	int idx = hash(name);
+void Hash::addItem(string planet, string system) {
+	int idx = hash(planet);
 
 	//add data to location if it is empty
-	if (hashTable[idx]->name == "empty") {
-		hashTable[idx]->name = name;
-		hashTable[idx]->drink = drink;
+	if (hashTable[idx]->planet == "empty") {
+		hashTable[idx]->planet = planet;
+		hashTable[idx]->system = system;
 	}
 	//if not, resolve collision via chaining
 	else {
 		item *ptr = hashTable[idx];
 		item *newItem = new item;
-		newItem->name = name;
-		newItem->drink = name;
+		newItem->planet = planet;
+		newItem->system = system;
 		newItem->next = NULL;
 		while (ptr->next != NULL) {
 			ptr = ptr->next;
@@ -35,7 +35,7 @@ void Hash::addItem(string name, string drink) {
 int Hash::numberOfItemsInIdx(int idx) {
 	int count = 0;
 
-	if (hashTable[idx]->name == "empty") {
+	if (hashTable[idx]->planet == "empty") {
 		return count;
 	}
 	count++;
@@ -53,10 +53,49 @@ void Hash::printTable() {
 		number = numberOfItemsInIdx(i);
 		cout << "-----------------\n";
 		cout << "Index = " << i << endl;
-		cout << hashTable[i]->name << endl;
-		cout << hashTable[i]->drink << endl;
+		cout << hashTable[i]->planet << endl;
+		cout << hashTable[i]->system << endl;
 		cout << "# of items = " << number << endl;
 		cout << "-----------------\n";
+	}
+}
+
+void Hash::printItemsInIdx(int idx) {
+	item *ptr = hashTable[idx];
+
+	if (ptr->planet == "empty") {
+		cout << "Index = " << idx << " is empty." << endl;
+	}
+	else {
+		cout << "Index = " << idx << " contains the following item(s):\n";
+		while (ptr != NULL) {
+			cout << "-----------------\n";
+			cout << ptr->planet << endl;
+			cout << ptr->system << endl;
+			cout << "-----------------\n";
+			ptr = ptr->next;
+		}
+	}
+}
+
+void Hash::findSystem(string planet){
+	int idx = hash(planet);
+	bool foundPlanet = false;
+	string system;
+
+	item *ptr = hashTable[idx];
+	while (ptr != NULL) {
+		if (ptr->planet == planet) {
+			foundPlanet = true;
+			system = ptr->system;
+		}
+		ptr = ptr->next;
+	}
+	if (foundPlanet) {
+		cout << "System = " << system << endl;
+	}
+	else {
+		cout << planet << " not found in hash table." << endl;
 	}
 }
 

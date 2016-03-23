@@ -6,11 +6,11 @@ using namespace std;
 
 class Hash {
 private:
-	static const int TABLESIZE = 10;
+	static const int TABLESIZE = 40;
 
 	struct item {
-		string name;
-		string drink;
+		string planet;
+		string system;
 		item *next;
 	};
 
@@ -22,4 +22,6 @@ public:
 	void addItem(string, string);
 	int numberOfItemsInIdx(int);
 	void printTable();
+	void printItemsInIdx(int);
+	void findSystem(string);
 };
